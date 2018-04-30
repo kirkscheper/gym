@@ -5,7 +5,6 @@ try:
     from BytesIO import BytesIO
 except ImportError:
     from io import BytesIO
-import fileinput
 import re
 from PIL import Image
 from random import randint, sample
@@ -195,6 +194,16 @@ class ucvForest(gym.GoalEnv):
 
     # Sim methods
     # ----------------------------
+    def set_port(port, sim_dir):
+        with open(sim_dir + 'unrealcv.ini', 'w') as ini_file:
+            print('[UnrealCV.Core]', file=ini_file)
+            print('Port={}'.format(str(port)), file=ini_file)
+            print('Width=224', file=ini_file)
+            print('Height=224', file=ini_file)
+            print('FOV=90.0', file=ini_file)
+            print('EnableInput=False', file=ini_file)
+            print('EnableRightEye=False', file=ini_file)
+
     def start_sim(self, restart=False):
         """ Starting game and connecting the UnrealCV client """
 
@@ -203,9 +212,7 @@ class ucvForest(gym.GoalEnv):
             self.shut_down()
 
         if self.sim is None:
-            with fileinput.FileInput(Config.SIM_DIR+'unrealcv.ini', inplace=True, backup='.bak') as file:
-                for line in file:
-                    print(re.sub(r'Port=\d+', 'Port={}'.format(self.port), line), end='')
+            self.set_port(self.port, Config.SIM_DIR)
             print('[{}] Connection attempt on PORT {}.'.format(self.name, self.port))
             with open(os.devnull, 'w') as fp:   # Sim messages on stdout are discarded
                 exe = Config.SIM_DIR + Config.SIM_NAME
