@@ -421,6 +421,18 @@ for reward_type in ['sparse', 'dense']:
         max_episode_steps=100,
     )
 
+register(
+    id='ucvForest-v0',
+    entry_point='gym.envs.local:ucvForest',
+    max_episode_steps=100,
+)
+register(
+    id='ucvForestSimple-v0',
+    entry_point='gym.envs.local:ucvForest',
+    kwargs={'preprocess_input':'True', 'visualize':0},
+    max_episode_steps=100,
+)
+
 # Atari
 # ----------------------------------------
 
