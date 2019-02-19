@@ -194,7 +194,7 @@ class ucvForest(gym.GoalEnv):
 
     # Sim methods
     # ----------------------------
-    def set_port(port, sim_dir):
+    def set_port(self, port, sim_dir):
         with open(sim_dir + 'unrealcv.ini', 'w') as ini_file:
             print('[UnrealCV.Core]', file=ini_file)
             print('Port={}'.format(str(port)), file=ini_file)
